@@ -16,6 +16,23 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
   final _focusNode = FocusNode();
 
   final List<ChatMessage> _messages = [];
+// Manejo de Nulls
+
+  // int valAbs(int? val) {
+  //   if (val == null) {
+  //     return 0;
+  //   }
+  //   return val.abs();
+  // }
+
+  // String valAbsString(String? val) => val ?? '';
+
+  // String valAbsString1(String? val) {
+  //   if (val == null) {
+  //     return '';
+  //   }
+  //   return val.trim();
+  // }
 
   bool _estaEscribiendo = false;
   @override
@@ -38,25 +55,23 @@ class _ChatPageState extends State<ChatPage> with TickerProviderStateMixin {
             ],
           ),
         ),
-        body: Container(
-          child: Column(
-            children: [
-              Flexible(
-                child: ListView.builder(
-                  physics: const BouncingScrollPhysics(),
-                  itemCount: _messages.length,
-                  itemBuilder: (_, int index) => _messages[index],
-                  reverse: true,
-                ),
+        body: Column(
+          children: [
+            Flexible(
+              child: ListView.builder(
+                physics: const BouncingScrollPhysics(),
+                itemCount: _messages.length,
+                itemBuilder: (_, int index) => _messages[index],
+                reverse: true,
               ),
-              Divider(height: size.height * 0.01),
-              Container(
-                height: size.height * 0.07,
-                color: Colors.white,
-                child: _inputChat(size),
-              ),
-            ],
-          ),
+            ),
+            Divider(height: size.height * 0.01),
+            Container(
+              height: size.height * 0.07,
+              color: Colors.white,
+              child: _inputChat(size),
+            ),
+          ],
         ));
   }
 

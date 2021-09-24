@@ -1,5 +1,7 @@
+import 'package:app_chat/services/auth_service.dart';
 import 'package:flutter/material.dart';
 import 'package:app_chat/models/usuario.dart';
+import 'package:provider/provider.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 class UsuariosPage extends StatefulWidget {
@@ -10,7 +12,7 @@ class UsuariosPage extends StatefulWidget {
 }
 
 class _UsuariosPageState extends State<UsuariosPage> {
-  RefreshController _refreshController = RefreshController(initialRefresh: false);
+  final RefreshController _refreshController = RefreshController(initialRefresh: false);
 
   final usuarios = [
     Usuario(email: 'facundotanovich@gmail.com', nombre: 'Facundo', online: true, uid: '1'),
@@ -20,11 +22,13 @@ class _UsuariosPageState extends State<UsuariosPage> {
   ];
   @override
   Widget build(BuildContext context) {
+    final authService = Provider.of<AuthService>(context);
+    final usuario = authService.getUsuario;
     return Scaffold(
         appBar: AppBar(
-          title: const Text(
-            'Mi nombre',
-            style: TextStyle(color: Colors.black87),
+          title: Text(
+            usuario.nombre,
+            style: const TextStyle(color: Colors.black87),
           ),
           centerTitle: true,
           elevation: 1,
@@ -34,7 +38,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
               Icons.exit_to_app,
               color: Colors.black87,
             ),
-            onPressed: () {},
+            onPressed: _logOut,
           ),
           actions: [
             Container(
@@ -57,6 +61,13 @@ class _UsuariosPageState extends State<UsuariosPage> {
           ),
           child: _listViewUsuarios(),
         ));
+  }
+
+  void _logOut() {
+    //TODO: Desconectar del socket Server
+
+    Navigator.pushReplacementNamed(context, 'login');
+    AuthService.deleteToken();
   }
 
   ListView _listViewUsuarios() {
@@ -94,7 +105,7 @@ class _UsuariosPageState extends State<UsuariosPage> {
 
   void _cargarUsuarios() async {
     // monitor network fetch
-    await Future.delayed(Duration(milliseconds: 1000));
+    await Future.delayed(const Duration(milliseconds: 1000));
     // if failed,use refreshFailed()
     _refreshController.refreshCompleted();
   }
