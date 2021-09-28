@@ -57,7 +57,6 @@ class AuthService with ChangeNotifier {
 
       await _guardarToken(loginResponse.token);
 
-      //TODO: Guardar token en lugar seguro
       return true;
     } else {
       return false;

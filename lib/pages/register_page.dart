@@ -1,11 +1,15 @@
-import 'package:app_chat/helpers/mostrar_alerta.dart';
+import 'package:flutter/material.dart';
+
+import 'package:provider/provider.dart';
 import 'package:app_chat/services/auth_service.dart';
+import 'package:app_chat/services/socket_service.dart';
+
+import 'package:app_chat/helpers/mostrar_alerta.dart';
+
 import 'package:app_chat/widgets/boton_azul.dart';
 import 'package:app_chat/widgets/labels.dart';
-import 'package:flutter/material.dart';
 import 'package:app_chat/widgets/custom_input.dart';
 import 'package:app_chat/widgets/logo.dart';
-import 'package:provider/provider.dart';
 
 class RegisterPage extends StatelessWidget {
   const RegisterPage({Key? key}) : super(key: key);
@@ -100,7 +104,8 @@ class __FormState extends State<_Form> {
     final authService = Provider.of<AuthService>(context, listen: false);
     final registroOk = await authService.register(nameCtrl.text, emailCtrl.text, passwordCtrl.text);
     if (registroOk == true) {
-      //TODO:Conectar al socket server
+      final socketService = Provider.of<SocketService>(context, listen: false);
+      socketService.connect();
 
       Navigator.pushReplacementNamed(context, 'usuarios');
     } else {
